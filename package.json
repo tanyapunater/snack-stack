@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "types": "module",
   "engines": {
     "node": "20.17.0"
   },
