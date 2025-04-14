@@ -6,38 +6,51 @@ export const QUERY_USER = gql`
       _id
       username
       email
-      thoughts {
+      recipes {
         _id
-        thoughtText
+        title
+        description
+        category
         createdAt
       }
     }
   }
 `;
 
-export const QUERY_THOUGHTS = gql`
-  query getThoughts {
-    thoughts {
+export const QUERY_RECIPES = gql`
+  query getRecipes($category: String, $search: String) {
+    getRecipes(category: $category, search: $search) {
       _id
-      thoughtText
-      thoughtAuthor
+      title
+      description
+      ingredients
+      instructions
+      category
       createdAt
+      updatedAt
+      createdBy {
+        _id
+        username
+      }
     }
   }
 `;
 
-export const QUERY_SINGLE_THOUGHT = gql`
-  query getSingleThought($thoughtId: ID!) {
-    thought(thoughtId: $thoughtId) {
+export const QUERY_SINGLE_RECIPE = gql`
+  query getRecipeById($id: ID!) {
+    getRecipeById(id: $id) {
       _id
-      thoughtText
-      thoughtAuthor
+      title
+      description
+      ingredients
+      instructions
+      category
       createdAt
-      comments {
+      updatedAt
+      createdBy {
         _id
-        commentText
-        commentAuthor
-        createdAt
+        username
+        email
       }
     }
   }
@@ -49,11 +62,13 @@ export const QUERY_ME = gql`
       _id
       username
       email
-      thoughts {
+      recipes {
         _id
-        thoughtText
-        thoughtAuthor
+        title
+        description
+        category
         createdAt
+        updatedAt
       }
     }
   }

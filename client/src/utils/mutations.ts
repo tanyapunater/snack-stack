@@ -1,5 +1,18 @@
 import { gql } from '@apollo/client';
 
+export const ADD_USER = gql`
+  mutation addUser($input: UserInput!) {
+    addUser(input: $input) {
+      token
+      user {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;
+
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -7,50 +20,51 @@ export const LOGIN_USER = gql`
       user {
         _id
         username
+        email
       }
     }
   }
 `;
 
-export const ADD_USER = gql`
-  mutation Mutation($input: UserInput!) {
-  addUser(input: $input) {
-    user {
-      username
+export const ADD_RECIPE = gql`
+  mutation addRecipe($input: RecipeInput!) {
+    addRecipe(input: $input) {
       _id
-    }
-    token
-  }
-}
-`;
-
-export const ADD_THOUGHT = gql`
-  mutation AddThought($input: ThoughtInput!) {
-    addThought(input: $input) {
-      _id
-      thoughtText
-      thoughtAuthor
+      title
+      description
+      ingredients
+      instructions
+      category
       createdAt
-      comments {
+      updatedAt
+      createdBy {
         _id
-        commentText
+        username
       }
     }
   }
 `;
 
-export const ADD_COMMENT = gql`
-  mutation addComment($thoughtId: ID!, $commentText: String!) {
-    addComment(thoughtId: $thoughtId, commentText: $commentText) {
+export const UPDATE_RECIPE = gql`
+  mutation updateRecipe($id: ID!, $input: RecipeInput!) {
+    updateRecipe(id: $id, input: $input) {
       _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-      comments {
+      title
+      description
+      ingredients
+      instructions
+      category
+      updatedAt
+      createdBy {
         _id
-        commentText
-        createdAt
+        username
       }
     }
+  }
+`;
+
+export const DELETE_RECIPE = gql`
+  mutation deleteRecipe($id: ID!) {
+    deleteRecipe(id: $id)
   }
 `;
