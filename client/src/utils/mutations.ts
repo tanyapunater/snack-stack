@@ -1,4 +1,18 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
+
+// User Authentication Mutations
+export const ADD_USER = gql`
+  mutation addUser($input: UserInput!) {
+    addUser(input: $input) {
+      token
+      user {
+        _id
+        username
+        email
+      }
+    }
+  }
+`;
 
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
@@ -7,22 +21,53 @@ export const LOGIN_USER = gql`
       user {
         _id
         username
+        email
       }
     }
   }
 `;
 
-export const ADD_USER = gql`
-  mutation Mutation($input: UserInput!) {
-  addUser(input: $input) {
-    user {
-      username
-      _id
+// Recipe Mutations
+
+export const ADD_RECIPE = gql`
+  mutation AddRecipe($input: AddRecipeInput!) {
+    addRecipe(input: $input) {
+      title
+      instructions
+      ingredients
+      description
+      createdBy {
+        username
+        _id
+      }
+      category
     }
-    token
   }
-}
 `;
+
+export const UPDATE_RECIPE = gql`
+  mutation Mutation($updateRecipeId: ID!, $input: UpdateRecipeInput!) {
+    updateRecipe(id: $updateRecipeId, input: $input) {
+      title
+      instructions
+      ingredients
+      createdBy {
+        username
+        _id
+      }
+      category
+      description
+    }
+  }
+`;
+
+export const DELETE_RECIPE = gql`
+  mutation deleteRecipe($id: ID!) {
+    deleteRecipe(id: $id)
+  }
+`;
+
+// Thought-related Mutations
 
 export const ADD_THOUGHT = gql`
   mutation AddThought($input: ThoughtInput!) {
