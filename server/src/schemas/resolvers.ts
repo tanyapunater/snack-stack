@@ -1,4 +1,4 @@
-import { Recipe, User } from '../models/index.js';
+import { Thought, Recipe, User } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js'; 
 
 // Define Context interface
@@ -28,6 +28,7 @@ interface UserArgs {
   username: string;
 }
 
+// Recipe related interfaces
 interface RecipeIdArgs {
   id: string;
 }
@@ -58,14 +59,38 @@ interface UpdateRecipeArgs {
   }
 }
 
+// Thought related interfaces
+interface ThoughtArgs {
+  thoughtId: string;
+}
+
+interface AddThoughtArgs {
+  input: {
+    thoughtText: string;
+    thoughtAuthor: string;
+  }
+}
+
+interface AddCommentArgs {
+  thoughtId: string;
+  commentText: string;
+}
+
+interface RemoveCommentArgs {
+  thoughtId: string;
+  commentId: string;
+}
+
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find().populate('recipes');
+      return User.find().populate(['thoughts', 'recipes']);
     },
     user: async (_parent: any, { username }: UserArgs) => {
-      return User.findOne({ username }).populate('recipes');
+      return User.findOne({ username }).populate(['thoughts', 'recipes']);
     },
+    
+    // Recipe related queries
     getRecipes: async (_parent: any, { category, search }: RecipeQueryArgs) => {
       try {
         // Start with an empty filter
@@ -93,16 +118,26 @@ const resolvers = {
     getRecipeById: async (_parent: any, { id }: RecipeIdArgs) => {
       return await Recipe.findOne({ _id: id }).populate('createdBy');
     },
+    
+    // Thought related queries
+    thoughts: async () => {
+      return await Thought.find().sort({ createdAt: -1 });
+    },
+    thought: async (_parent: any, { thoughtId }: ThoughtArgs) => {
+      return await Thought.findOne({ _id: thoughtId });
+    },
+    
     // Query to get the authenticated user's information
     me: async (_parent: any, _args: any, context: Context) => {
-      // If the user is authenticated, find and return the user's information along with their recipes
+      // If the user is authenticated, find and return the user's information along with their thoughts and recipes
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('recipes');
+        return User.findOne({ _id: context.user._id }).populate(['thoughts', 'recipes']);
       }
       // If the user is not authenticated, throw an AuthenticationError
       throw new AuthenticationError('Could not authenticate user.');
     },
   },
+  
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       // Create a new user with the provided username, email, and password
@@ -139,6 +174,7 @@ const resolvers = {
       return { token, user };
     },
     
+    // Recipe related mutations
     addRecipe: async (_parent: any, { input }: AddRecipeArgs, context: Context) => {
       if (context.user) {
         // Validate category
@@ -218,6 +254,78 @@ const resolvers = {
         );
 
         return true; // Return boolean indicating success
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    
+    // Thought related mutations
+    addThought: async (_parent: any, { input }: AddThoughtArgs, context: Context) => {
+      if (context.user) {
+        const thought = await Thought.create({ ...input });
+
+        await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $addToSet: { thoughts: thought._id } }
+        );
+
+        return thought;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    
+    addComment: async (_parent: any, { thoughtId, commentText }: AddCommentArgs, context: Context) => {
+      if (context.user) {
+        return Thought.findOneAndUpdate(
+          { _id: thoughtId },
+          {
+            $addToSet: {
+              comments: { commentText, commentAuthor: context.user.username },
+            },
+          },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    
+    removeThought: async (_parent: any, { thoughtId }: ThoughtArgs, context: Context) => {
+      if (context.user) {
+        const thought = await Thought.findOneAndDelete({
+          _id: thoughtId,
+          thoughtAuthor: context.user.username,
+        });
+
+        if (!thought) {
+          throw new AuthenticationError('Thought not found or you are not authorized to delete it');
+        }
+
+        await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { thoughts: thought._id } }
+        );
+
+        return thought;
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    
+    removeComment: async (_parent: any, { thoughtId, commentId }: RemoveCommentArgs, context: Context) => {
+      if (context.user) {
+        return Thought.findOneAndUpdate(
+          { _id: thoughtId },
+          {
+            $pull: {
+              comments: {
+                _id: commentId,
+                commentAuthor: context.user.username,
+              },
+            },
+          },
+          { new: true }
+        );
       }
       throw new AuthenticationError('You need to be logged in!');
     },
