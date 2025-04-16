@@ -56,20 +56,20 @@ export const GET_SINGLE_RECIPE = gql`
 `;
 
 export const GET_MY_RECIPES = gql`
-query Query {
-  me {
-    username
-    recipes {
-      title
-      instructions
-      ingredients
-      description
-      category
-      _id
+  query Query {
+    me {
+      username
+      recipes {
+        title
+        instructions
+        ingredients
+        description
+        category
+        _id
+      }
     }
   }
-}
-;`;
+`;
 
 // Thought Queries
 
