@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Welcome = () => {
   const navigate = useNavigate();
 
   const handleViewRecipes = () => {
-    navigate('/search'); // update route if needed
+    navigate("/searchrecipes"); // update route if needed
   };
 
   return (
