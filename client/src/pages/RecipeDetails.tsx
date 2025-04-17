@@ -4,7 +4,7 @@ import { getRecipeDetails } from '../components/RecipeDetails/RecipeDetails';
 
 const RecipeDetails: React.FC = () => {
 
-    const { recipeId } = useParams();
+    const { recipeId } = useParams(); // Get the recipeId from the URL parameters
 
     interface Recipe {
             id: number
