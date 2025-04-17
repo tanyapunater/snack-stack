@@ -13,5 +13,5 @@ export const getRecipeDetails = async (recipeId: string): Promise<Recipe> => {
         instructions: "Step 1",
         category: "Test Category",
         imageUrl: "https://example.com/image.jpg"
-    };
+    }; // Mock data
 };
