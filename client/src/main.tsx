@@ -12,6 +12,7 @@ import OldHome from "./pages/OldHome.js";
 import SearchRecipes from "./pages/SearchRecipes.js";
 import AddRecipe from "./pages/AddRecipe.js";
 import Welcome from "./pages/WelcomePage.js";
+import RecipeDetails from "./pages/RecipeDetails.js";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "WelcomePage",
         element: <Welcome />,
+      },
+      {
+        path: "/recipe/:recipeId",
+        element: <RecipeDetails />,
       }
     ],
   },
