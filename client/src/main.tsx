@@ -10,6 +10,8 @@ import Profile from "./pages/Profile";
 import ErrorPage from "./pages/Error";
 import OldHome from "./pages/OldHome.js";
 import SearchRecipes from "./pages/SearchRecipes.js";
+import AddRecipe from "./pages/AddRecipe.js";
+import Welcome from "./pages/WelcomePage.js";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
       {
         path: "/SearchRecipes",
         element: <SearchRecipes />,
+      },
+      {
+        path: "/addRecipe",
+        element: <AddRecipe />,
+      },
+      {
+        path: "WelcomePage",
+        element: <Welcome />,
       }
     ],
   },
