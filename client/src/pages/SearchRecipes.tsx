@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Recipe } from '../interfaces/getRecipes';
+import { Link } from 'react-router-dom';
 
 const getRecipes = (): Recipe[] => [
   {
@@ -97,7 +98,6 @@ const RecipeList: React.FC = () => {
         🍴 Recipe Finder
       </h2>
 
-
       {/* Search + Filter */}
       <div className="mb-8 flex flex-col md:flex-row items-center gap-4 justify-between">
         <input
@@ -152,10 +152,17 @@ const RecipeList: React.FC = () => {
                   </ul>
                 </div>
 
-                <div>
+                <div className="mb-4">
                   <h4 className="font-semibold text-gray-800">Instructions:</h4>
                   <p className="text-sm text-gray-700">{recipe.instructions}</p>
                 </div>
+
+                <Link
+                  to={`/recipes/${recipe.id}`}
+                  className="inline-block mt-2 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600 transition"
+                >
+                  Check Recipe
+                </Link>
               </div>
             </div>
           ))}
