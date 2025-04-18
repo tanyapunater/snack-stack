@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         element: <SingleThought />,
       },
       {
-        path: "/SearchRecipes",
+        path: "/searchrecipes",
         element: <SearchRecipes />,
       },
       {
