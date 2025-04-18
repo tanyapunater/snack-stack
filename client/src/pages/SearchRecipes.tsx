@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { useState } from 'react';
-import { Recipe } from '../interfaces/getRecipes';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-const getRecipes = (): Recipe[] => [
+export interface Recipe {
+  id?: number;
+  title: string;
+  description: string;
+  ingredients: string[];
+  instructions: string;
+  imageUrl: string;
+  category: string;
+}
+
+const getHardcodedRecipes = (): Recipe[] => [
   {
     id: 1,
     title: 'Spaghetti Bolognese',
@@ -60,18 +68,37 @@ const getRecipes = (): Recipe[] => [
   },
 ];
 
-const RecipeList: React.FC = () => {
-  const allRecipes = getRecipes();
+const SearchRecipes: React.FC = () => {
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('All');
 
-  const filteredRecipes = allRecipes.filter((recipe) => {
+  useEffect(() => {
+    const localRecipes = JSON.parse(localStorage.getItem('recipes') || '[]') as Recipe[];
+    setRecipes([...getHardcodedRecipes(), ...localRecipes]);
+  }, []);
+
+  const handleDelete = (index: number) => {
+    const updatedRecipes = [...recipes];
+    const deleted = updatedRecipes.splice(index, 1)[0];
+
+    // Only update localStorage if it's not a hardcoded recipe (those have `id`)
+    if (!deleted.id) {
+      const storedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]') as Recipe[];
+      const filtered = storedRecipes.filter((r) => r.title !== deleted.title);
+      localStorage.setItem('recipes', JSON.stringify(filtered));
+    }
+
+    setRecipes(updatedRecipes);
+  };
+
+  const filteredRecipes = recipes.filter((recipe) => {
     const matchesSearch = recipe.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = category === 'All' || recipe.category === category;
     return matchesSearch && matchesCategory;
   });
 
-  const uniqueCategories = ['All', ...new Set(allRecipes.map((r) => r.category))];
+  const uniqueCategories = ['All', ...new Set(recipes.map((r) => r.category))];
 
   const categoryColor = (category: string) => {
     switch (category) {
@@ -126,43 +153,54 @@ const RecipeList: React.FC = () => {
         <p className="text-center text-gray-500">No recipes found. Try another search or category.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRecipes.map((recipe) => (
+          {filteredRecipes.map((recipe, index) => (
             <div
-              key={recipe.id}
+              key={`${recipe.title}-${index}`}
               className="bg-white border border-blue-100 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
             >
               <img
-                src={recipe.imageUrl}
-                alt={recipe.title}
-                className="w-full h-48 object-cover"
+              src={
+                recipe.imageUrl?.startsWith('http') || recipe.imageUrl?.startsWith('data:image')
+                ? recipe.imageUrl
+                : 'https://via.placeholder.com/300x200.png?text=No+Image'
+              }
+              alt={recipe.title}
+              className="w-full h-48 object-cover"
               />
+
               <div className="p-5">
-                <h3 className="text-2xl font-bold text-blue-600 mb-1">{recipe.title}</h3>
-                <p className="text-gray-600 mb-2">{recipe.description}</p>
-                <span className={`inline-block px-3 py-1 text-sm font-medium rounded-full mb-4 ${categoryColor(recipe.category)}`}>
-                  {recipe.category}
-                </span>
+              <h3 className="text-2xl font-bold text-blue-600 mb-1">{recipe.title}</h3>
+              <p className="text-gray-600 mb-2">{recipe.description}</p>
+              <span
+                className={`inline-block px-3 py-1 text-sm font-medium rounded-full mb-4 ${categoryColor(
+                recipe.category
+                )}`}
+              >
+                {recipe.category}
+              </span>
 
-                <div className="mb-3">
-                  <h4 className="font-semibold text-gray-800">Ingredients:</h4>
-                  <ul className="list-disc list-inside text-sm text-gray-700">
-                    {recipe.ingredients.map((ingredient, index) => (
-                      <li key={index}>{ingredient}</li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="mb-3">
+                <h4 className="font-semibold text-gray-800">Ingredients:</h4>
+                <ul className="list-disc list-inside text-sm text-gray-700">
+                {recipe.ingredients.map((ingredient, i) => (
+                  <li key={i}>{ingredient}</li>
+                ))}
+                </ul>
+              </div>
 
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-800">Instructions:</h4>
-                  <p className="text-sm text-gray-700">{recipe.instructions}</p>
-                </div>
+              <div className="mb-4">
+                <h4 className="font-semibold text-gray-800">Instructions:</h4>
+                <p className="text-sm text-gray-700">{recipe.instructions}</p>
+              </div>
 
-                <Link
-                  to={`/recipes/${recipe.id}`}
-                  className="inline-block mt-2 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600 transition"
+              {!recipe.id && (
+                <button
+                onClick={() => handleDelete(index)}
+                className="bg-red-100 hover:bg-red-200 text-red-600 font-semibold py-2 px-4 rounded text-sm"
                 >
-                  Check Recipe
-                </Link>
+                Delete
+                </button>
+              )}
               </div>
             </div>
           ))}
@@ -172,4 +210,4 @@ const RecipeList: React.FC = () => {
   );
 };
 
-export default RecipeList;
+export default SearchRecipes;
