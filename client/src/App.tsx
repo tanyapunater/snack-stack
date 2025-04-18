@@ -39,6 +39,7 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="bg-white">
+       
         <main>
               <Outlet />
               

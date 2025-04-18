@@ -158,8 +158,9 @@ const RecipeList: React.FC = () => {
                 </div>
 
                 <Link
-                  to={`/recipes/${recipe.id}`}
                   className="inline-block mt-2 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded hover:bg-blue-600 transition"
+                  to={`/recipes/${recipe.id}`}
+                  
                 >
                   Check Recipe
                 </Link>
