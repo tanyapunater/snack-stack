@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddRecipe = () => {
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [instructions, setInstructions] = useState('');
-  const [imgBase64, setImgBase64] = useState('');
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [ingredients, setIngredients] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [imgBase64, setImgBase64] = useState("");
   const navigate = useNavigate();
 
   // Convert file to base64
@@ -28,27 +28,27 @@ const AddRecipe = () => {
 
     const recipe = {
       title,
-      description: '',
-      ingredients: ingredients.split('\n').filter((i) => i.trim() !== ''),
-      instructions: instructions.split('\n').filter((i) => i.trim() !== ''),
+      description: "",
+      ingredients: ingredients.split("\n").filter((i) => i.trim() !== ""),
+      instructions: instructions.split("\n").filter((i) => i.trim() !== ""),
       category,
       imgUrl: imgBase64, // store base64 image
     };
 
-    const storedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
-    localStorage.setItem('recipes', JSON.stringify([...storedRecipes, recipe]));
+    const storedRecipes = JSON.parse(localStorage.getItem("recipes") || "[]");
+    localStorage.setItem("recipes", JSON.stringify([...storedRecipes, recipe]));
 
-    console.log('Saved:', recipe);
+    console.log("Saved:", recipe);
 
     // Clear form
-    setTitle('');
-    setCategory('');
-    setIngredients('');
-    setInstructions('');
-    setImgBase64('');
+    setTitle("");
+    setCategory("");
+    setIngredients("");
+    setInstructions("");
+    setImgBase64("");
 
     // Go to search page
-    navigate('/search');
+    navigate("/searchrecipes");
   };
 
   return (
@@ -113,30 +113,31 @@ const AddRecipe = () => {
           </div>
 
           <div>
-  <label className="block font-medium mb-1">Image Upload</label>
-  <div className="w-full border border-dashed border-gray-400 rounded px-3 py-4 text-center bg-gray-50">
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleImageUpload}
-      className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300"
-      required
-    />
-    <p className="text-xs text-gray-500 mt-2">Supported formats: JPG, PNG, GIF</p>
-  </div>
+            <label className="block font-medium mb-1">Image Upload</label>
+            <div className="w-full border border-dashed border-gray-400 rounded px-3 py-4 text-center bg-gray-50">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300"
+                required
+              />
+              <p className="text-xs text-gray-500 mt-2">
+                Supported formats: JPG, PNG, GIF
+              </p>
+            </div>
 
-  {imgBase64 && (
-    <div className="mt-4">
-      <p className="text-sm font-medium mb-2">Image Preview:</p>
-      <img
-        src={imgBase64}
-        alt="Preview"
-        className="w-full h-48 object-cover rounded shadow"
-      />
-    </div>
-  )}
-</div>
-
+            {imgBase64 && (
+              <div className="mt-4">
+                <p className="text-sm font-medium mb-2">Image Preview:</p>
+                <img
+                  src={imgBase64}
+                  alt="Preview"
+                  className="w-full h-48 object-cover rounded shadow"
+                />
+              </div>
+            )}
+          </div>
 
           <button
             type="submit"
