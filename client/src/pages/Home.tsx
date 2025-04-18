@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
           Discover your next favorite dish or share your culinary creations with the world. Search by category, ingredient, or just explore what’s trending!
         </p>
         <Link
-          to="/search"
+          to="/searchrecipes"
           className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition"
         >
           🔍 Search Recipes
