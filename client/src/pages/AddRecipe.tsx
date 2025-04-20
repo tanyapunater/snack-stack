@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddRecipe = () => {
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
-  const [imgBase64, setImgBase64] = useState("");
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [instructions, setInstructions] = useState('');
+  const [imgBase64, setImgBase64] = useState('');
   const navigate = useNavigate();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,9 +25,10 @@ const AddRecipe = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const recipe = {
+    const newRecipe = {
+      id: Date.now(), // Unique ID
       title,
-      description: "",
+      description: '',
       ingredients: ingredients.split("\n").filter((i) => i.trim() !== ""),
       instructions: instructions.split("\n").filter((i) => i.trim() !== ""),
       category,
@@ -35,25 +36,28 @@ const AddRecipe = () => {
     };
 
     const storedRecipes = JSON.parse(localStorage.getItem("recipes") || "[]");
-    localStorage.setItem("recipes", JSON.stringify([...storedRecipes, recipe]));
+    storedRecipes.push(newRecipe);
+    localStorage.setItem("recipes", JSON.stringify(storedRecipes));
 
-    console.log("Saved:", recipe);
+    console.log("Saved:", newRecipe);
 
+    // Reset the form
     setTitle('');
     setCategory('');
     setIngredients('');
     setInstructions('');
     setImgBase64('');
 
+    // Navigate to Search Recipes
     navigate('/searchrecipes');
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50 px-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 border border-blue-200">
-      <h3 className="text-xl font-bold text-center text-blue-700 mt-9 mb-9">
-  Add a New Recipe
-</h3>
+        <h3 className="text-xl font-bold text-center text-blue-700 mt-9 mb-9">
+          Add a New Recipe
+        </h3>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
