@@ -48,7 +48,7 @@ const AddRecipe = () => {
               .split("\n")
               .filter((i) => i.trim() !== ""),
             category,
-            imageUrl: imageBase64,
+            imgUrl: imageBase64,
           },
         },
       });
