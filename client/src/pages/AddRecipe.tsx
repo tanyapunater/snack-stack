@@ -4,9 +4,16 @@ import { useNavigate } from "react-router-dom";
 //importing the mutation to add recipe
 import { useMutation } from "@apollo/client";
 import { ADD_RECIPE } from "../utils/mutations";
+import { QUERY_RECIPES } from "../utils/queries";
 
 const AddRecipe = () => {
-  const [addRecipe] = useMutation(ADD_RECIPE);
+  const [addRecipe] = useMutation(ADD_RECIPE, {
+    refetchQueries: [
+      {
+        query: QUERY_RECIPES,
+      },
+    ],
+  });
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [ingredients, setIngredients] = useState("");
