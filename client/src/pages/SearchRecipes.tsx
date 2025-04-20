@@ -79,7 +79,7 @@ const SearchRecipes: React.FC = () => {
   const uniqueCategories = ['All', ...new Set(recipes.map((r) => r.category))];
 
   const handleDelete = (id: number) => {
-    const updatedRecipes = recipes.filter((recipe) => recipe.id !== id);
+    const updatedRecipes = recipes.filter((recipe) => recipe.id !== id.toString());
     setRecipes(updatedRecipes);
     localStorage.setItem('recipes', JSON.stringify(updatedRecipes));
   };
@@ -149,7 +149,7 @@ const SearchRecipes: React.FC = () => {
                   Check Recipe
                 </Link>
                 <button
-                  onClick={() => handleDelete(recipe.id)}
+                  onClick={() => handleDelete(Number(recipe.id))}
                   className="mt-2 px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded hover:bg-red-600 transition"
                 >
                   Delete
