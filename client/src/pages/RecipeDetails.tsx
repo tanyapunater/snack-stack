@@ -1,8 +1,8 @@
-// import React from 'react';
-// import { useParams } from 'react-router-dom';
-// import { useQuery } from '@apollo/client';
-// import { QUERY_SINGLE_RECIPE } from '../utils/queries';
-// import { Recipe } from '../interfaces/getRecipes';
+// import React from "react";
+// import { useParams } from "react-router-dom";
+// import { useQuery } from "@apollo/client";
+// import { QUERY_SINGLE_RECIPE } from "../utils/queries";
+// import { Recipe } from "../interfaces/getRecipes";
 
 // const RecipeDetails: React.FC = () => {
 //   const { recipeId } = useParams<{ recipeId: string }>();
@@ -16,12 +16,17 @@
 
 //   // If not found in query, fallback to localStorage
 //   if (!loading && !recipe) {
-//     const localRecipes: Recipe[] = JSON.parse(localStorage.getItem('recipes') || '[]');
+//     const localRecipes: Recipe[] = JSON.parse(
+//       localStorage.getItem("recipes") || "[]"
+//     );
 //     recipe = localRecipes.find((r) => r.id.toString() === recipeId) || null;
 //   }
 
 //   if (loading) return <div className="text-center mt-10">Loading...</div>;
-//   if (!recipe) return <div className="text-center text-red-500 mt-10">Recipe not found.</div>;
+//   if (!recipe)
+//     return (
+//       <div className="text-center text-red-500 mt-10">Recipe not found.</div>
+//     );
 
 //   return (
 //     <div className="flex flex-auto items-center justify-center flex-col w-full h-full bg-gray-100 p-4">
@@ -31,9 +36,15 @@
 //             {recipe.title}
 //           </h1>
 //           {recipe.imageUrl && (
-//             <img src={recipe.imageUrl} alt={recipe.title} className="mb-4 rounded-lg max-h-64 object-cover" />
+//             <img
+//               src={recipe.imageUrl}
+//               alt={recipe.title}
+//               className="mb-4 rounded-lg max-h-64 object-cover"
+//             />
 //           )}
-//           {recipe.description && <p className="text-gray-700 mb-4">{recipe.description}</p>}
+//           {recipe.description && (
+//             <p className="text-gray-700 mb-4">{recipe.description}</p>
+//           )}
 
 //           <h3 className="text-xl font-semibold mb-2">Ingredients</h3>
 //           <ul className="list-disc list-inside mb-4">
@@ -44,13 +55,20 @@
 
 //           <h3 className="text-xl font-semibold mb-2">Instructions</h3>
 //           <ol className="list-decimal list-inside mb-4">
-//             {typeof recipe.instructions === 'string'
-//               ? recipe.instructions.split('\n').map((step: string, index: number) => <li key={index}>{step}</li>)
-//               : recipe.instructions.map((step: string, index: number) => <li key={index}>{step}</li>)
-//             }
+//             {typeof recipe.instructions === "string"
+//               ? recipe.instructions
+//                   .split("\n")
+//                   .map((step: string, index: number) => (
+//                     <li key={index}>{step}</li>
+//                   ))
+//               : recipe.instructions.map((step: string, index: number) => (
+//                   <li key={index}>{step}</li>
+//                 ))}
 //           </ol>
 
-//           <p className="text-gray-700 mb-4 font-medium">Category: {recipe.category}</p>
+//           <p className="text-gray-700 mb-4 font-medium">
+//             Category: {recipe.category}
+//           </p>
 //         </div>
 //       </div>
 //     </div>
