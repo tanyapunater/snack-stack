@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+// import React, { useState } from "react"; //removing useState as it is not used
+
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
+
 import { QUERY_SINGLE_RECIPE } from "../utils/queries"; // Import the query for fetching a single recipe
 
-const RecipeDetails: React.FC = () => {
+const RecipeDetails = () => {
   const { recipeId } = useParams(); // Get the recipeId from the URL parameters
+
   const { loading, data } = useQuery(QUERY_SINGLE_RECIPE, {
-    variables: { id: recipeId }, //updated to use id
+    variables: { recipeId: recipeId }, //using recipeId from params
   });
+
   const recipe = data?.getRecipeById; //updating key to match the query
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  const error = useState(false);
+  //const error = useState(false); removing error state as it is not used
 
   return (
     <div className="flex flex-auto items-center justify-center flex-col w-full h-full bg-gray-100 p-4">
@@ -52,7 +56,7 @@ const RecipeDetails: React.FC = () => {
           </div>
         </div>
       ) : null}
-      {error && <p className="text-red-500">Error fetching recipe details.</p>}
+      {<p className="text-red-500">Error fetching recipe details.</p>}
     </div>
   );
 };
