@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Recipe } from "../interfaces/getRecipes";
 import { Link } from "react-router-dom";
 
-// import { useQuery } from "@apollo/client";
-// import { QUERY_RECIPES } from "../utils/queries";
+import { useQuery } from "@apollo/client";
+import { QUERY_RECIPES } from "../utils/queries";
 
 // const queryRecipes = () => {
 //   const { data } = useQuery(QUERY_RECIPES);
@@ -92,9 +92,15 @@ const getRecipes = (): Recipe[] => [
 ];
 
 const RecipeList: React.FC = () => {
-  const allRecipes: Recipe[] = getRecipes();
+  const { data, loading, error } = useQuery(QUERY_RECIPES);
+  const queriedRecipes: Recipe[] = data?.recipes || [];
+  const mockRecipes: Recipe[] = getRecipes();
+  const allRecipes: Recipe[] = [...mockRecipes, ...queriedRecipes];
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("All");
+
+  if (loading) return <p className="text-center mt-8">Loading recipes...</p>;
+  if (error) console.error("GraphQL error:", error);
 
   const filteredRecipes = allRecipes.filter((recipe) => {
     const matchesSearch = recipe.title
