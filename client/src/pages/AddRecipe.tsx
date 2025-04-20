@@ -11,7 +11,7 @@ const AddRecipe = () => {
   const [category, setCategory] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [instructions, setInstructions] = useState("");
-  const [imgBase64, setImgBase64] = useState("");
+  const [imageBase64, setImageBase64] = useState("");
   const navigate = useNavigate();
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ const AddRecipe = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (reader.result) {
-        setImgBase64(reader.result as string);
+        setImageBase64(reader.result as string);
       }
     };
     reader.readAsDataURL(file);
@@ -41,7 +41,7 @@ const AddRecipe = () => {
               .split("\n")
               .filter((i) => i.trim() !== ""),
             category,
-            imgUrl: imgBase64,
+            imageUrl: imageBase64,
           },
         },
       });
@@ -53,7 +53,7 @@ const AddRecipe = () => {
       setCategory("");
       setIngredients("");
       setInstructions("");
-      setImgBase64("");
+      setImageBase64("");
 
       // Navigate to search page
       navigate("/searchrecipes");
@@ -146,13 +146,13 @@ const AddRecipe = () => {
               </p>
             </div>
 
-            {imgBase64 && (
+            {imageBase64 && (
               <div className="mt-4">
                 <p className="text-sm font-medium text-blue-700 mb-2">
                   Image Preview:
                 </p>
                 <img
-                  src={imgBase64}
+                  src={imageBase64}
                   alt="Preview"
                   className="w-full h-48 object-cover rounded shadow"
                 />

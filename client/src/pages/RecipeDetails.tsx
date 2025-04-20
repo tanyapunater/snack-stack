@@ -25,7 +25,7 @@ const RecipeDetails: React.FC = () => {
               {recipe.title}
             </h1>
             <img
-              src={recipe.imgUrl} //updated to use imgUrl
+              src={recipe.imageUrl} //updated to use imageUrl
               alt={recipe.title}
               className="mb-4 rounded-lg"
             />
