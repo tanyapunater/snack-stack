@@ -61,9 +61,9 @@ const router = createBrowserRouter([
         element: <Welcome />,
       },
       {
-        path: "/recipe/:recipeId",
+        path: "/recipes/:recipeId", //updated path to match URL in code
         element: <RecipeDetails />,
-      }
+      },
     ],
   },
 ]);

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+//importing the mutation to add recipe
+import { useMutation } from "@apollo/client";
+import { ADD_RECIPE } from "../utils/mutations";
+
 const AddRecipe = () => {
+  const [addRecipe] = useMutation(ADD_RECIPE);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [ingredients, setIngredients] = useState("");
@@ -22,42 +27,53 @@ const AddRecipe = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  //updated the submit form to use gql instead of localstorage
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const recipe = {
-      title,
-      description: "",
-      ingredients: ingredients.split("\n").filter((i) => i.trim() !== ""),
-      instructions: instructions.split("\n").filter((i) => i.trim() !== ""),
-      category,
-      imageUrl: imgBase64,
-    };
+    try {
+      const { data } = await addRecipe({
+        variables: {
+          input: {
+            title,
+            ingredients: ingredients.split("\n").filter((i) => i.trim() !== ""),
+            instructions: instructions
+              .split("\n")
+              .filter((i) => i.trim() !== ""),
+            category,
+            imgUrl: imgBase64,
+          },
+        },
+      });
 
-    const storedRecipes = JSON.parse(localStorage.getItem("recipes") || "[]");
-    localStorage.setItem("recipes", JSON.stringify([...storedRecipes, recipe]));
+      console.log("Saved:", data.addRecipe);
 
-    console.log("Saved:", recipe);
+      // Clear form
+      setTitle("");
+      setCategory("");
+      setIngredients("");
+      setInstructions("");
+      setImgBase64("");
 
-    setTitle('');
-    setCategory('');
-    setIngredients('');
-    setInstructions('');
-    setImgBase64('');
-
-    navigate('/searchrecipes');
+      // Navigate to search page
+      navigate("/searchrecipes");
+    } catch (error) {
+      console.error("Error adding recipe:", error);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50 px-4">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 border border-blue-200">
-      <h3 className="text-xl font-bold text-center text-blue-700 mt-9 mb-9">
-  Add a New Recipe
-</h3>
+        <h3 className="text-xl font-bold text-center text-blue-700 mt-9 mb-9">
+          Add a New Recipe
+        </h3>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-blue-800 font-semibold mb-1">Recipe Name</label>
+            <label className="block text-blue-800 font-semibold mb-1">
+              Recipe Name
+            </label>
             <input
               type="text"
               className="w-full border border-blue-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -68,7 +84,9 @@ const AddRecipe = () => {
           </div>
 
           <div>
-            <label className="block text-blue-800 font-semibold mb-1">Category</label>
+            <label className="block text-blue-800 font-semibold mb-1">
+              Category
+            </label>
             <select
               className="w-full border border-blue-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={category}
@@ -84,7 +102,9 @@ const AddRecipe = () => {
           </div>
 
           <div>
-            <label className="block text-blue-800 font-semibold mb-1">Ingredients</label>
+            <label className="block text-blue-800 font-semibold mb-1">
+              Ingredients
+            </label>
             <textarea
               className="w-full border border-blue-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               rows={3}
@@ -96,7 +116,9 @@ const AddRecipe = () => {
           </div>
 
           <div>
-            <label className="block text-blue-800 font-semibold mb-1">Instructions</label>
+            <label className="block text-blue-800 font-semibold mb-1">
+              Instructions
+            </label>
             <textarea
               className="w-full border border-blue-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               rows={3}
@@ -108,7 +130,9 @@ const AddRecipe = () => {
           </div>
 
           <div>
-            <label className="block text-blue-800 font-semibold mb-1">Image Upload</label>
+            <label className="block text-blue-800 font-semibold mb-1">
+              Image Upload
+            </label>
             <div className="w-full border border-dashed border-blue-300 rounded px-3 py-4 text-center bg-blue-100">
               <input
                 type="file"
@@ -117,12 +141,16 @@ const AddRecipe = () => {
                 className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-200 file:text-blue-900 hover:file:bg-blue-300"
                 required
               />
-              <p className="text-xs text-blue-700 mt-2">Supported formats: JPG, PNG, GIF</p>
+              <p className="text-xs text-blue-700 mt-2">
+                Supported formats: JPG, PNG, GIF
+              </p>
             </div>
 
             {imgBase64 && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-blue-700 mb-2">Image Preview:</p>
+                <p className="text-sm font-medium text-blue-700 mb-2">
+                  Image Preview:
+                </p>
                 <img
                   src={imgBase64}
                   alt="Preview"
