@@ -1,9 +1,9 @@
 export interface Recipe {
-    id: number;
+    id: string;
     title: string;
-    description: string;
+    description?: string;
+    imageUrl?: string;
     ingredients: string[];
-    instructions: string;
-    imageUrl: string;
+    instructions: string | string[]; // Explicitly define the type
     category: string;
-    };
+  }

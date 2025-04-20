@@ -8,7 +8,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { Outlet } from "react-router-dom";
 
-import Header from "./components/Header";  // Import Header
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 // Construct the main GraphQL API endpoint
@@ -16,11 +16,9 @@ const httpLink = createHttpLink({
   uri: "/graphql",
 });
 
-// Construct request middleware to attach the JWT token to every request as an `authorization` header
+// Attach JWT token to each request
 const authLink = setContext((_, { headers }) => {
-  // Get the authentication token from local storage if it exists
   const token = localStorage.getItem("id_token");
-  // Return headers with the authorization token
   return {
     headers: {
       ...headers,
@@ -38,20 +36,16 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="bg-white">
-        {/* Render Header globally */}
+      <div className="bg-white min-h-screen flex flex-col">
+        {/* Global Header */}
         <Header />
 
-        <main>
-        <main className="pt-24">  {/* adjust pt-24 as needed for spacing */}
-  <Outlet />
-</main>
-
-          {/* Render the child routes here */}
+        {/* Main content */}
+        <main className="pt-24 flex-grow">
           <Outlet />
         </main>
 
-        {/* Render Footer globally */}
+        {/* Global Footer */}
         <Footer />
       </div>
     </ApolloProvider>
