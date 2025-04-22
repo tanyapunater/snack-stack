@@ -1,19 +1,31 @@
-import { type JwtPayload, jwtDecode } from 'jwt-decode';
+import { type JwtPayload, jwtDecode } from "jwt-decode";
 
 // Extending the JwtPayload interface to include additional data fields specific to the application.
 interface ExtendedJwt extends JwtPayload {
-  data:{
-    username:string,
-    email:string,
-    id:string
-  }
-};
+  data: {
+    username: string;
+    email: string;
+    id: string;
+    _id: string;
+  };
+}
 
 class AuthService {
   // This method decodes the JWT token to get the user's profile information.
   getProfile() {
     // jwtDecode is used to decode the JWT token and return its payload.
     return jwtDecode<ExtendedJwt>(this.getToken());
+  }
+
+  getProfileId() {
+    // jwtDecode is used to decode the JWT token and return its payload.
+    console.log(this?.getProfile()?.data?._id);
+    return this?.getProfile()?.data?._id;
+  }
+
+  getProfileUsername() {
+    // jwtDecode is used to decode the JWT token and return its payload.
+    return this?.getProfile()?.data.username;
   }
 
   // This method checks if the user is logged in by verifying the presence and validity of the token.
@@ -41,21 +53,21 @@ class AuthService {
 
   // This method retrieves the token from localStorage.
   getToken(): string {
-    const loggedUser = localStorage.getItem('id_token') || '';
+    const loggedUser = localStorage.getItem("id_token") || "";
     // Returns the token stored in localStorage.
     return loggedUser;
   }
 
   // This method logs in the user by storing the token in localStorage and redirecting to the home page.
   login(idToken: string) {
-    localStorage.setItem('id_token', idToken);
-    window.location.assign('/');
+    localStorage.setItem("id_token", idToken);
+    window.location.assign("/");
   }
 
   // This method logs out the user by removing the token from localStorage and redirecting to the home page.
   logout() {
-    localStorage.removeItem('id_token');
-    window.location.assign('/');
+    localStorage.removeItem("id_token");
+    window.location.assign("/");
   }
 }
 

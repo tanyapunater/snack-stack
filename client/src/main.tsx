@@ -9,6 +9,10 @@ import SingleThought from "./pages/SingleThought";
 import Profile from "./pages/Profile";
 import ErrorPage from "./pages/Error";
 import OldHome from "./pages/OldHome.js";
+import SearchRecipes from "./pages/SearchRecipes.js";
+import AddRecipe from "./pages/AddRecipe.js";
+import Welcome from "./pages/WelcomePage.js";
+import RecipeDetails from "./pages/RecipeDetails.js"; //added import for RecipeDetails
 
 const router = createBrowserRouter([
   {
@@ -44,6 +48,22 @@ const router = createBrowserRouter([
         path: "/thoughts/:thoughtId",
         element: <SingleThought />,
       },
+      {
+        path: "/searchrecipes",
+        element: <SearchRecipes />,
+      },
+      {
+        path: "/addRecipe",
+        element: <AddRecipe />,
+      },
+      {
+        path: "WelcomePage",
+        element: <Welcome />,
+      },
+      {
+        path: "/recipes/:recipeId",
+        element: <RecipeDetails />,
+      }
     ],
   },
 ]);
