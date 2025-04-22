@@ -6,4 +6,8 @@ export interface Recipe {
   ingredients: string[];
   instructions: string[];
   category: string;
+  createdBy?: {
+    _id: string;
+    username: string;
+  };
 }

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
 import { QUERY_RECIPES } from "../utils/queries";
 import { DELETE_RECIPE } from "../utils/mutations";
+import auth from "../utils/auth";
 
 const SearchRecipes: React.FC = () => {
   // const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -183,6 +184,11 @@ const SearchRecipes: React.FC = () => {
                   {recipe.category?.toUpperCase()}
                 </span>
 
+                {/* Created by user */}
+                <p className="text-gray-500 text-sm mb-3">
+                  Created by: {recipe?.createdBy?.username}
+                </p>
+
                 {/* Footer sticks to the bottom */}
                 <div className="mt-auto pt-5 flex flex-row gap-2 border-t border-gray-200">
                   <Link
@@ -191,12 +197,15 @@ const SearchRecipes: React.FC = () => {
                   >
                     Check Recipe
                   </Link>
-                  <button
-                    onClick={() => handleDelete(recipe._id)}
-                    className="px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded hover:bg-red-600 transition"
-                  >
-                    Delete
-                  </button>
+                  {auth.loggedIn() &&
+                    auth.getProfileId() === recipe?.createdBy?._id && (
+                      <button
+                        onClick={() => handleDelete(recipe._id)}
+                        className="px-4 py-2 bg-red-500 text-white text-sm font-semibold rounded hover:bg-red-600 transition"
+                      >
+                        Delete
+                      </button>
+                    )}
                 </div>
               </div>
             </div>
