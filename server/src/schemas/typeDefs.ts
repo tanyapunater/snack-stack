@@ -30,6 +30,7 @@ const typeDefs = `
     ingredients: [String!]!
     instructions: [String!]!
     category: String!
+    imgUrl: String
     createdAt: String!
     updatedAt: String!
     createdBy: User!
@@ -46,6 +47,7 @@ const typeDefs = `
     ingredients: [String!]!
     instructions: [String!]!
     category: String!
+    imgUrl: String
   }
 
   input UpdateRecipeInput {
@@ -54,6 +56,7 @@ const typeDefs = `
     ingredients: [String!]
     instructions: [String!]
     category: String
+    imgUrl: String
   }
 
   input UserInput {

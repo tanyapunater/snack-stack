@@ -36,12 +36,12 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="bg-white min-h-screen flex flex-col">
+      <div className="bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 min-h-screen flex flex-col">
         {/* Global Header */}
         <Header />
 
         {/* Main content */}
-        <main className="pt-24 flex-grow">
+        <main>
           <Outlet />
         </main>
 

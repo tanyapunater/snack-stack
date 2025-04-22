@@ -15,62 +15,62 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        {/* Logo / App Name */}
-        <Link to="/" className="text-xl font-bold text-indigo-600">
-          Snack Stack
-        </Link>
+    <>
+      <header className="sticky top-0 z-50 bg-blue-200">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <h1 className="text-3xl font-extrabold text-blue-900">
+            🍽️ Snack Stack
+          </h1>
 
-        {/* Navigation Links */}
-        <div className="flex gap-8">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.to}
-              className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-            >
-              {item.name}
-            </Link>
-          ))}
-        </div>
+          <div className="flex gap-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.to}
+                className="text-blue-800 hover:text-blue-600 font-medium transition cursor-pointer"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
 
-        {/* Auth Buttons */}
-        <div className="flex gap-4">
-          {Auth.loggedIn() ? (
-            <>
-              <Link
-                to="/me"
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-              >
-                {Auth.getProfile().data.username}'s Profile
-              </Link>
-              <button
-                onClick={logout}
-                className="text-sm font-medium text-gray-700 hover:text-red-600"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="text-sm font-medium text-gray-700 hover:text-indigo-600"
-              >
-                Log In
-              </Link>
-              <Link
-                to="/signup"
-                className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
-              >
-                Sign Up
-              </Link>
-            </>
-          )}
-        </div>
-      </nav>
-    </header>
+          {/* Auth Buttons */}
+          <div className="flex gap-4 items-center justify-center">
+            {Auth.loggedIn() ? (
+              <div className="flex items-center justify-center gap-4">
+                <Link
+                  to="/me"
+                  className="text-blue-800 hover:text-blue-600 font-medium transition"
+                >
+                  {Auth.getProfile().data.username}'s Profile
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-blue-800 hover:text-blue-600 font-medium transition"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center gap-4">
+                <Link
+                  to="/login"
+                  className="rounded-md text-blue-800 px-4 py-2 hover:text-blue-600 font-medium transition"
+                >
+                  Log In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
+          </div>
+        </nav>
+      </header>
+    </>
   );
 };
 

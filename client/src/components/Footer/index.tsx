@@ -98,15 +98,18 @@ const Footer: React.FC = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-400 hover:text-gray-300"
+                className="text-blue-800 hover:text-blue-600 font-medium transition"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon aria-hidden="true" className="size-6" />
               </a>
             ))}
           </div>
-          <p className="mt-8 text-center text-sm/6 text-gray-400 md:order-1 md:mt-0">
-            &copy; 2024 Your Company, Inc. All rights reserved.
+          <p
+            className="mt-8 text-center text-sm/6 text-blue-800 hover:text-blue-600 font-medium transition
+ md:order-1 md:mt-0"
+          >
+            &copy; 2025 Snack Stack, Inc. All rights reserved.
           </p>
         </div>
       </footer>

@@ -1,7 +1,13 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document, Types } from "mongoose";
 
 // Define allowed recipe categories
-export type RecipeCategory = 'breakfast' | 'lunch' | 'dinner' | 'snack' | 'dessert' | 'other';
+export type RecipeCategory =
+  | "breakfast"
+  | "lunch"
+  | "dinner"
+  | "snack"
+  | "dessert"
+  | "other";
 
 // Define an interface for the Recipe document
 interface IRecipe extends Document {
@@ -10,6 +16,7 @@ interface IRecipe extends Document {
   ingredients: string[];
   instructions: string[];
   category: RecipeCategory;
+  imgUrl?: string;
   createdAt: Date;
   updatedAt: Date;
   createdBy: Types.ObjectId;
@@ -27,24 +34,32 @@ const recipeSchema = new Schema<IRecipe>(
       type: String,
       trim: true,
     },
-    ingredients: [{
-      type: String,
-      required: true,
-      trim: true,
-    }],
-    instructions: [{
-      type: String,
-      required: true,
-      trim: true,
-    }],
+    ingredients: [
+      {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    ],
+    instructions: [
+      {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    ],
     category: {
       type: String,
       required: true,
-      enum: ['breakfast', 'lunch', 'dinner', 'snack', 'dessert', 'other'],
+      enum: ["breakfast", "lunch", "dinner", "snack", "dessert", "other"],
+    },
+    imgUrl: {
+      type: String,
+      trim: true,
     },
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
   },
@@ -56,8 +71,8 @@ const recipeSchema = new Schema<IRecipe>(
 );
 
 // Create text index for search functionality
-recipeSchema.index({ title: 'text', ingredients: 'text' });
+recipeSchema.index({ title: "text", ingredients: "text" });
 
-const Recipe = model<IRecipe>('Recipe', recipeSchema);
+const Recipe = model<IRecipe>("Recipe", recipeSchema);
 
 export default Recipe;

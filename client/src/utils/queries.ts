@@ -98,8 +98,7 @@
 //   }
 // `;
 
-
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const QUERY_USER = gql`
   query user($username: String!) {
@@ -169,6 +168,7 @@ export const QUERY_RECIPES = gql`
       description
       ingredients
       instructions
+      imgUrl
       category
       createdAt
       updatedAt
@@ -188,6 +188,7 @@ export const QUERY_RECIPE = gql`
       description
       ingredients
       instructions
+      imgUrl
       category
       createdAt
       updatedAt
